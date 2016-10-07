@@ -26,7 +26,7 @@ void setup() {
 
   /* switch on led */
   pinMode(led_pin, OUTPUT);
-  digitalWrite(led_pin, LOW);
+  digitalWrite(led_pin, HIGH);
   Serial.println("Booting");
   WiFi.mode(WIFI_STA);
 
@@ -35,22 +35,21 @@ void setup() {
   while (WiFi.waitForConnectResult() != WL_CONNECTED) {
     WiFi.begin(ssid, password);
     Serial.println("...");
-    Switch(150); // if network failed , run this function to identify or you can put own function to run cont/...
+    Switch(2000); // if network failed , run this function to identify or you can put own function to run cont/...
   }
 
 
   ArduinoOTA.setHostname(host);
   ArduinoOTA.onStart([]() { // switch off all the PINS
-    analogWrite(led_pin, 0);
+    analogWrite(led_pin, 1);
   });
 
   ArduinoOTA.onEnd([]() { // Just debug purpose
-    analogWrite(led_pin, 1);
-    delay(250);
     analogWrite(led_pin, 0);
     delay(250);
     analogWrite(led_pin, 1);
     delay(250);
+    
   });
 
   ArduinoOTA.onError([](ota_error_t error) {
